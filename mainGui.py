@@ -1,6 +1,9 @@
 import wx
 
 
+
+
+####
 class Example(wx.Frame):
 
     def __init__(self, parent, title):
