@@ -1,0 +1,2 @@
+class CollectArtifacts:
+    pass
