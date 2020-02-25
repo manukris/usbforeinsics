@@ -1,10 +1,13 @@
 import wx
 
+from usbArtifacts import UsbArtifacts
+
 ####
 class MainWindow(wx.Frame):
 
     def __init__(self, parent, title ):
         super().__init__(parent, title=title, size=(1200, 600))
+
         self.Centre()
         self.GUI()
         self.Show()
@@ -58,6 +61,8 @@ class MainWindow(wx.Frame):
 
         self.Bind(wx.EVT_MENU, self.OnQuit, fileItem3)
 
+        self.Bind(wx.EVT_MENU, self.OnScan, fileItem1)
+
         self.body()
 
 
@@ -72,18 +77,30 @@ class MainWindow(wx.Frame):
         self.list.InsertColumn(4, 'Connected Date', wx.LIST_FORMAT_RIGHT, width=140)
         self.list.InsertColumn(5, 'Drive Name', wx.LIST_FORMAT_RIGHT, width=140)
         self.list.InsertColumn(6, 'Device install date', wx.LIST_FORMAT_RIGHT, width=140)
-        self.list.InsertColumn(7, 'Vendor Id', wx.LIST_FORMAT_RIGHT, width=140)
+        self.list.InsertColumn(7, 'Vendor Name', wx.LIST_FORMAT_RIGHT, width=140)
         self.list.InsertColumn(8, 'Firmware Version', wx.LIST_FORMAT_RIGHT, width=140)
-
-
-
-
-
-
 
 
     def OnQuit(self, e):
         self.Close()
+
+    def OnScan(self,e):
+
+
+        usbDetails = UsbArtifacts()
+        self.usbConnectDetailsList = usbDetails.getAllConnectedDeviceDetails()
+        self.usbConnectDetailsList.reverse()
+        # print(self.usbConnectDetailsList)
+        counter = len(self.usbConnectDetailsList)
+        for device in self.usbConnectDetailsList:
+            print(device)
+            index = self.list.InsertItem(0, str(counter ))
+            self.list.SetItem(index, 1, device['type'])
+            self.list.SetItem(index, 2, device['vendor'])
+            self.list.SetItem(index, 3, device['productname'])
+            self.list.SetItem(index, 4, device['productname'])
+            self.list.SetItem(index, 5, device['serialno'])
+            counter -= 1
 
 
 
